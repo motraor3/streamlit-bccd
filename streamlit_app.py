@@ -45,7 +45,7 @@ st.write('# Face Detection Model built with Roboflow')
 ## Pull in default image or user-selected image.
 if uploaded_file is None:
     # Default image.
-    default_img = './images/roboflow_full_logo_color.jpg'
+    default_img = './images/demo-faces.jpg'
     image = Image.open(default_img)
 
 else:
