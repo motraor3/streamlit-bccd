@@ -102,6 +102,8 @@ def main():
         help="What is the maximum amount of overlap permitted between visible bounding boxes?",
     )
 
+    do_not_annotate = st.checkbox('Do Not Annotate')
+
     ### Adding in the Streamlit and Roboflow logos to the sidebar
     image = Image.open("./images/roboflow_full_logo_color.png")
     st.sidebar.image(image, use_column_width=True)
@@ -153,6 +155,10 @@ def main():
             image = Image.fromarray(image)
             draw = ImageDraw.Draw(image)
             font = ImageFont.load_default()
+
+        # Checkbox for removing bounding boxes is on for video output
+        def _do_not_annotate_image(self, image, detections):
+            image = Image.fromarray(image)       
 
             ### This is copied from the roboflow docs line (143-166):
             ### https://docs.roboflow.com/inference/hosted-api#drawing-a-box-from-the-inference-api-json-output
@@ -225,10 +231,13 @@ def main():
             preds = resp.json()
             detections = preds["predictions"]
 
-            ### finally, annotate the image
-            annotated_image = self._annotate_image(image, detections)
+            ### finally, annotate the image, or choose not to
+            if do_not_annotate:
+                annotated_image = self._do_not_annotate_image(image, detections)
+            else:
+                annotated_image = self._annotate_image(image, detections)
 
-            ## return the image with the bounding boxes to the browser
+            ## return the image with (or without) the bounding boxes to the browser
             return av.VideoFrame.from_ndarray(annotated_image, format="bgr24")
 
     ### reach out to compnent developer about 221-227
