@@ -44,38 +44,26 @@ def main():
     Main part of the script that defines the main method and calls the logo detection.
     Also sets up a logger for debugging purposes.
     """
-    process_video = st.button('Process Video')
-    process_img = st.button('Process Image')
-
-    if process_video:
-        st.header("Inference on a Video Feed with the Roboflow API")
-
-        video_dashboard()
-
-    if process_img:
-        st.header("Inference on an Image with the Roboflow API")
-
-        image_dashboard()
-
     logger.debug("=== Alive threads ===")
     for thread in threading.enumerate():
         if thread.is_alive():
             logger.debug(f" {thread.name} ({thread.ident})")
+
+    #### For the webrtc plug in, this is setting the default values for the widget,
+    #### incluing removing the audio
+    WEBRTC_CLIENT_SETTINGS = ClientSettings(
+        rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+        media_stream_constraints={
+            "video": True,
+            "audio": False,
+        },
+    )
 
 
     def video_dashboard():
         """
         Face Detection Model built with Roboflow (video)
         """
-        #### For the webrtc plug in, this is setting the default values for the widget,
-        #### incluing removing the audio
-        WEBRTC_CLIENT_SETTINGS = ClientSettings(
-            rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-            media_stream_constraints={
-                "video": True,
-                "audio": False,
-            },
-        )
 
         ##########
         ##### Set up sidebar
@@ -242,11 +230,11 @@ def main():
             async_processing=True,
         )
 
-    ## calling the overlap function with the actual values returned from the sliders
-    if webrtc_ctx.video_processor:
-        webrtc_ctx.video_processor.set_overlap_confidence(
-            OVERLAP_THRESHOLD, CONFIDENCE_THRESHOLD
-        )
+        ## calling the overlap function with the actual values returned from the sliders
+        if webrtc_ctx.video_processor:
+            webrtc_ctx.video_processor.set_overlap_confidence(
+                OVERLAP_THRESHOLD, CONFIDENCE_THRESHOLD
+            )
 
     ##########
     ##### Set up sidebar.
@@ -370,7 +358,20 @@ def main():
 
         ## Display the JSON in main app.
         st.write('### JSON Output')
-        st.write(r.json())
+        st.write(r.json()) 
+
+    process_video = st.button('Process Video')
+    process_img = st.button('Process Image')
+
+    if process_video:
+        st.header("Inference on a Video Feed with the Roboflow API")
+
+        video_dashboard()
+
+    if process_img:
+        st.header("Inference on an Image with the Roboflow API")
+
+        image_dashboard()
 
 
 ### the main program where we call the main method
