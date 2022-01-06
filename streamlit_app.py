@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import base64
 import io
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import glob
 from base64 import decodebytes
 from io import BytesIO
@@ -20,14 +20,14 @@ uploaded_file = st.sidebar.file_uploader('',
                                          type=['png', 'jpg', 'jpeg'],
                                          accept_multiple_files=False)
 
-st.sidebar.write('[Find additional images on Roboflow.](https://public.roboflow.com/object-detection/bccd/)')
+st.sidebar.write('[Find this dataset and more on Roboflow Universe.](https://universe.roboflow.com/)')
 
 ## Add in sliders.
 confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
 overlap_threshold = st.sidebar.slider('Overlap threshold: What is the maximum amount of overlap permitted between visible bounding boxes?', 0.0, 1.0, 0.5, 0.01)
 
 
-image = Image.open('./images/roboflow_logo.png')
+image = Image.open('./images/roboflow_full_logo_color.png')
 st.sidebar.image(image,
                  use_column_width=True)
 
@@ -40,13 +40,13 @@ st.sidebar.image(image,
 ##########
 
 ## Title.
-st.write('# Blood Cell Count Object Detection')
+st.write('# Face Detection Model built with Roboflow')
 
 ## Pull in default image or user-selected image.
 if uploaded_file is None:
     # Default image.
-    url = 'https://github.com/matthewbrems/streamlit-bccd/blob/master/BCCD_sample_images/BloodImage_00038_jpg.rf.6551ec67098bc650dd650def4e8a8e98.jpg?raw=true'
-    image = Image.open(requests.get(url, stream=True).raw)
+    default_img = './images/roboflow_full_logo_color.jpg'
+    image = Image.open(default_img)
 
 else:
     # User-selected image.
@@ -63,10 +63,12 @@ image.save(buffered, quality=90, format='JPEG')
 img_str = base64.b64encode(buffered.getvalue())
 img_str = img_str.decode('ascii')
 
+### Setting up the url and query parameters for roboflow endpoint
+# the overlap and confidence query parameters are set within the
 ## Construct the URL to retrieve image.
 upload_url = ''.join([
-    'https://infer.roboflow.com/rf-bccd-bkpj9--1',
-    '?access_token=vbIBKNgIXqAQ',
+    'https://detect.roboflow.com/face-detection-mik1i/5',
+    f'?api_key={st.secrets["api_key"]}',
     '&format=image',
     f'&overlap={overlap_threshold * 100}',
     f'&confidence={confidence_threshold * 100}',
@@ -93,8 +95,8 @@ st.image(image,
 
 ## Construct the URL to retrieve JSON.
 upload_url = ''.join([
-    'https://infer.roboflow.com/rf-bccd-bkpj9--1',
-    '?access_token=vbIBKNgIXqAQ'
+    'https://detect.roboflow.com/face-detection-mik1i/5',
+    f'?api_key={st.secrets["api_key"]}'
 ])
 
 ## POST to the API.
@@ -106,6 +108,11 @@ r = requests.post(upload_url,
 
 ## Save the JSON.
 output_dict = r.json()
+
+# Map detected classes to uniquely colored bounding boxes
+color_map = {
+    "face": "#D41159",
+}
 
 ## Generate list of confidences.
 confidences = [box['confidence'] for box in output_dict['predictions']]
