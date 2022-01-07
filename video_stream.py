@@ -36,10 +36,6 @@ from streamlit_webrtc import (
     webrtc_streamer,
 )
 
-### setting up the logger to log messages created by the script to help debug in main()
-logger = logging.getLogger(__name__)
-
-
 def video_dashboard():
     """
     Face Detection Model built with Roboflow (video)

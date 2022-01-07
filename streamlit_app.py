@@ -60,12 +60,12 @@ def main():
     process_video = st.button('Process Video')
     process_img = st.button('Process Image')
 
-    if process_video:
+    while process_video:
         st.header("Inference on a Video Feed with the Roboflow API")
 
         video_stream.video_dashboard()
 
-    if process_img:
+    while process_img:
         st.header("Inference on an Image with the Roboflow API")
 
         image_upload.image_dashboard()
