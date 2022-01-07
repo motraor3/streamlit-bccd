@@ -215,3 +215,7 @@ def video_dashboard():
         webrtc_ctx.video_processor.set_overlap_confidence(
             OVERLAP_THRESHOLD, CONFIDENCE_THRESHOLD
         )
+
+
+if __name__ == "__main__":
+    video_dashboard()

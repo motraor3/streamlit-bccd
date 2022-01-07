@@ -133,4 +133,6 @@ def image_dashboard():
     st.write('### JSON Output')
     st.write(r.json()) 
 
-image_dashboard()
+
+if __name__ == "__main__":
+    image_dashboard()
