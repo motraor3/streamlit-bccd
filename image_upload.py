@@ -16,11 +16,14 @@ import matplotlib.pyplot as plt
 # Add in location to select image.
 
 def image_dashboard():
+    f_number = 0
     st.sidebar.write('#### Select an image to upload.')
     uploaded_file = st.sidebar.file_uploader('',
                                             type=['png', 'jpg', 'jpeg'],
                                             accept_multiple_files=False,
-                                            key='image-dashboard')
+                                            key=f'image-dashboard{f_number}')
+    
+    f_number +=1
 
     st.sidebar.write('[Find this dataset and more on Roboflow Universe.](https://universe.roboflow.com/)')
 
