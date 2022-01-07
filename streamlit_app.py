@@ -41,21 +41,22 @@ from streamlit_webrtc import (
 ### setting up the logger to log messages created by the script to help debug in main()
 logger = logging.getLogger(__name__)
 
+#### For the webrtc plug in, this is setting the default values for the widget,
+#### incluing removing the audio
+WEBRTC_CLIENT_SETTINGS = ClientSettings(
+    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+    media_stream_constraints={
+        "video": True,
+        "audio": False,
+    },
+)
+
+
 def main():
     """
     Main part of the script that defines the main method and calls the logo detection.
     Also sets up a logger for debugging purposes.
     """
-
-    #### For the webrtc plug in, this is setting the default values for the widget,
-    #### incluing removing the audio
-    WEBRTC_CLIENT_SETTINGS = ClientSettings(
-        rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-        media_stream_constraints={
-            "video": True,
-            "audio": False,
-        },
-    )
 
     process_video = st.button('Process Video')
     process_img = st.button('Process Image')
