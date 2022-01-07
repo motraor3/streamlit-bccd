@@ -36,6 +36,16 @@ from streamlit_webrtc import (
     webrtc_streamer,
 )
 
+#### For the webrtc plug in, this is setting the default values for the widget,
+#### incluing removing the audio
+WEBRTC_CLIENT_SETTINGS = ClientSettings(
+    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+    media_stream_constraints={
+        "video": True,
+        "audio": False,
+    },
+)
+
 def video_dashboard():
     """
     Face Detection Model built with Roboflow (video)

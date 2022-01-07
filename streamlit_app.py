@@ -26,30 +26,8 @@ try:
 except ImportError:
     from typing_extensions import Literal  # type: ignore
 
-import av
-import cv2
-from aiortc.contrib.media import MediaPlayer
-
-from streamlit_webrtc import (
-    AudioProcessorBase,
-    ClientSettings,
-    VideoProcessorBase,
-    WebRtcMode,
-    webrtc_streamer,
-)
-
 ### setting up the logger to log messages created by the script to help debug in main()
 logger = logging.getLogger(__name__)
-
-#### For the webrtc plug in, this is setting the default values for the widget,
-#### incluing removing the audio
-WEBRTC_CLIENT_SETTINGS = ClientSettings(
-    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-    media_stream_constraints={
-        "video": True,
-        "audio": False,
-    },
-)
 
 
 def main():
