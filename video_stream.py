@@ -64,6 +64,7 @@ def video_dashboard():
         100,
         50,
         5,
+        key='video_dashboard',
         help="What is the minimum acceptable confidence level for displaying a bounding box?",
     )
     OVERLAP_THRESHOLD = st.sidebar.slider(
@@ -72,6 +73,7 @@ def video_dashboard():
         100,
         30,
         5,
+        key='video_dashboard',
         help="What is the maximum amount of overlap permitted between visible bounding boxes?",
     )
 

@@ -28,8 +28,8 @@ def image_dashboard():
     st.sidebar.write('[Find this dataset and more on Roboflow Universe.](https://universe.roboflow.com/)')
 
     ## Add in sliders.
-    confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01)
-    overlap_threshold = st.sidebar.slider('Overlap threshold: What is the maximum amount of overlap permitted between visible bounding boxes?', 0.0, 1.0, 0.5, 0.01)
+    confidence_threshold = st.sidebar.slider('Confidence threshold: What is the minimum acceptable confidence level for displaying a bounding box?', 0.0, 1.0, 0.5, 0.01, key='image_dashboard')
+    overlap_threshold = st.sidebar.slider('Overlap threshold: What is the maximum amount of overlap permitted between visible bounding boxes?', 0.0, 1.0, 0.5, 0.01, key='image_dashboard')
 
 
     image = Image.open('./images/roboflow_full_logo_color.png')
